@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 @RestController
 public class AirportController {
-    private AirportService airportService;
+    private final AirportService airportService;
 
     public AirportController(AirportService airportService) {
         this.airportService = airportService;
     }
 
     @GetMapping("/airports")
-    public String[] getAirports() {
-        return new String[]{"Airports"};
+    public Airport[] getAirports() {
+        return airportService.getAirports();
     }
+
+
 }

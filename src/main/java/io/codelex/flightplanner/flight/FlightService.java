@@ -1,28 +1,23 @@
 package io.codelex.flightplanner.flight;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codelex.flightplanner.airport.AirportService;
 import io.codelex.flightplanner.api.PageResult;
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 public class FlightService{
-    private final FlightRepository flightRepository;
-    private final AirportService airportService;
 
-    public FlightService(FlightRepository flightRepository, AirportService airportService) {
-        this.flightRepository = flightRepository;
-        this.airportService = airportService;
-    }
+    @Autowired
+    private FlightRepository flightRepository;
+    @Autowired
+    private AirportService airportService;
+
 
     public PageResult searchFlights(String from, String to, LocalDate departureDate) {
         return flightRepository.searchFlights(from, to, departureDate);
@@ -42,8 +37,7 @@ public class FlightService{
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    public Flight addFlight(@Valid Flight flight){
-
+    public Flight addFlight(Flight flight) {
         if (isFlightValid(flight)) {
             airportService.addAirportFromFlight(flight.getFrom());
             airportService.addAirportFromFlight(flight.getTo());
@@ -65,26 +59,22 @@ public class FlightService{
 
     private boolean isUniqueFlight(Flight flight) {
         boolean unique = true;
-        if (!FlightRepository.flights.isEmpty() && flight != null) {
-            for (int i = 0; i < FlightRepository.flights.size(); i++) {
-                if (FlightRepository.flights.get(i).equals(flight)) {
+        if (!flightRepository.getFlights().isEmpty()) {
+            for (int i = 0; i < flightRepository.getFlights().size(); i++) {
+                if (flightRepository.getFlights().get(i).equals(flight)) {
                     unique = false;
                     break;
                 }
             }
-        }
-        if (FlightRepository.flights.isEmpty()) {
-            unique = true;
     }
+        if(flightRepository.getFlights().isEmpty()) {
+            unique = true;
+        }
     return unique;
     }
 
     private boolean isDepartureBeforeArrival(Flight flight) {
         return flight.getDepartureTime().isBefore(flight.getArrivalTime());
     }
-
-//    private LocalDateTime dateTimeParser(String flightDateTime) {
-//        return LocalDateTime.parse(flightDateTime.replace(" ", "T"));
-//    }
 
 }

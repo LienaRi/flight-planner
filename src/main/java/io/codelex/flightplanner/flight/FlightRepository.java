@@ -14,8 +14,19 @@ import java.util.List;
 
 @Repository
 public class FlightRepository {
-    static final List<Flight> flights = new ArrayList<>();
+    private List<Flight> flights;
 
+    public FlightRepository() {
+        flights = new ArrayList<>();
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
+    }
+
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
+    }
 
     public Flight findById(int id) {
         Flight searchedFlight = flights.stream()

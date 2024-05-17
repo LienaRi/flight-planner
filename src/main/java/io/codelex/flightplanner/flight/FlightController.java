@@ -1,8 +1,7 @@
 package io.codelex.flightplanner.flight;
 
-import io.codelex.flightplanner.api.AddFlightResponse;
 import io.codelex.flightplanner.api.PageResult;
-import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,23 +11,15 @@ import java.time.LocalDate;
 @RequestMapping
 @RestController
 public class FlightController {
-    private final FlightService flightService;
 
-    public FlightController(FlightService flightService) {
-        this.flightService = flightService;
-    }
+    @Autowired
+    private FlightService flightService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/admin-api/flights")
-    public synchronized Flight addFlight(@Valid @RequestBody AddFlightResponse addFlightResponse) {
-        Flight flight = new Flight(addFlightResponse.getFrom(),
-                addFlightResponse.getTo(),
-                addFlightResponse.getCarrier(),
-                addFlightResponse.getDepartureTime(),
-                addFlightResponse.getArrivalTime());
+    public synchronized Flight addFlight(@RequestBody Flight flight) {
         return flightService.addFlight(flight);
     }
-
 
     @GetMapping("/admin-api/flights/{id}")
     public Flight searchFlight(@PathVariable int id) {

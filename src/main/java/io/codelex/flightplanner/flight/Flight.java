@@ -1,10 +1,8 @@
 package io.codelex.flightplanner.flight;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.codelex.flightplanner.airport.Airport;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,20 +11,12 @@ import java.util.Objects;
 public class Flight {
 
     private int id;
-    @Valid
-    @NotNull
     private Airport from;
-    @Valid
-    @NotNull
     private Airport to;
-    @Valid
-    @NotBlank
     private String carrier;
-    @Valid
-    @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime departureTime;
-    @Valid
-    @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime arrivalTime;
 
     public Flight() {

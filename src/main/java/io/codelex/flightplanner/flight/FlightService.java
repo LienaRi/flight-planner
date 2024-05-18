@@ -48,8 +48,8 @@ public class FlightService {
         Flight flight = new Flight(flightRequest.getFrom(),
                 flightRequest.getTo(),
                 flightRequest.getCarrier(),
-                dateTimeFormatter(flightRequest.getDepartureTime()),
-                dateTimeFormatter(flightRequest.getArrivalTime()));
+                flightRequest.getDepartureTime(),
+                flightRequest.getArrivalTime());
         addId(flight);
 
         if (isFlightComplete(flight)) {
@@ -64,15 +64,6 @@ public class FlightService {
             flightRepository.addFlight(flight);
         }
         return flight;
-    }
-
-    public LocalDateTime dateTimeFormatter(LocalDateTime dateTimeToFormat) throws DateTimeParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        if (dateTimeToFormat != null) {
-            return LocalDateTime.parse(dateTimeToFormat.toString(), formatter);
-        } else {
-            return null;
-        }
     }
 
     private boolean isFlightComplete(Flight flight) {

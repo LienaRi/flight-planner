@@ -29,14 +29,16 @@ public class FlightRepository {
     }
 
     public Flight findById(int id) {
-        Flight searchedFlight = flights.stream()
-                .filter(flight -> flight.getId() == (id))
-                .findAny()
-                .orElse(null);
-        if (searchedFlight == null) {
+        Flight flight = null;
+        for (Flight flightsInList : flights) {
+            if (flightsInList.getId() == id) {
+                flight = flightsInList;
+            }
+        }
+        if (flight == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } else {
-            return searchedFlight;
+            return flight;
         }
     }
 
@@ -46,19 +48,17 @@ public class FlightRepository {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    public synchronized Flight addFlight(@Valid Flight flight) {
-        if (flights.isEmpty()) {
-            flight.setId(0);
-        } else {
-            flight.setId(flights.size());
-        }
+    public synchronized void addFlight(@Valid Flight flight) {
         flights.add(flight);
-        return flight;
     }
 
 
     public void deleteFlight(int id) {
-        flights.removeIf(flight -> flight.getId() == (id));
+        for(int i=0; i<flights.size(); i++) {
+            if (flights.get(i).getId() == id) {
+                flights.remove(i);
+            }
+        }
     }
 
     public PageResult searchFlights(String from, String to, LocalDate departureDate) {

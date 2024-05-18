@@ -40,10 +40,12 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
+    @JsonProperty("id")
     public int getId() {
         return id;
     }
 
+    @JsonProperty("id")
     public void setId(int id) {
         this.id = id;
     }
@@ -95,7 +97,7 @@ public class Flight {
 
 
     @JsonProperty("arrivalTime")
-    public void setArrivalTime(LocalDateTime arrivalTime) {
+public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

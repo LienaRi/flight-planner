@@ -2,6 +2,7 @@ package io.codelex.flightplanner.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.codelex.flightplanner.airport.Airport;
+
 import java.time.LocalDateTime;
 
 

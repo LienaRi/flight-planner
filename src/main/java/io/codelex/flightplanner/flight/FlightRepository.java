@@ -10,15 +10,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 
 @Repository
 public class FlightRepository {
     private List<Flight> flights;
 
     public FlightRepository() {
-        flights = new CopyOnWriteArrayList<>();
+        flights = new ArrayList<>();
     }
 
     public List<Flight> getFlights() {
@@ -39,17 +37,16 @@ public class FlightRepository {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    public void clearFlights() {
+    public synchronized void clearFlights() {
         flights.clear();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    public synchronized void addFlight(Flight flight) {
+    public void addFlight(Flight flight) {
         flights.add(flight);
     }
 
-
-    public synchronized void deleteFlight(int id) {
+    public void deleteFlight(int id) {
         flights.removeIf(flight -> flight.getId() == id);
     }
 
@@ -67,4 +64,3 @@ public class FlightRepository {
         return new PageResult<>(0, flightSearchResults.length, flightSearchResults);
     }
 }
-

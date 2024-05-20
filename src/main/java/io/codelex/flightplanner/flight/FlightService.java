@@ -26,7 +26,7 @@ public class FlightService {
     }
 
     public PageResult<Flight> searchFlights(SearchFlightRequest searchFlightRequest) {
-        if(searchFlightRequest.getFrom() == null
+        if (searchFlightRequest.getFrom() == null
                 || searchFlightRequest.getTo() == null
                 || searchFlightRequest.getDepartureDate() == null) {
             throw new ResponseStatusException(HttpStatus.valueOf(400), "Incomplete search request");
@@ -63,9 +63,9 @@ public class FlightService {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Incomplete flight details");
         } else if (!isUniqueFlight(flight)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Duplicate flight");
-        } else if(!isDepartureBeforeArrival(flight) || areFlightDatesStrange(flight)) {
+        } else if (!isDepartureBeforeArrival(flight) || areFlightDatesStrange(flight)) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Invalid flight dates");
-        } else if (areFromAndToSame(flight)){
+        } else if (areFromAndToSame(flight)) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(400), "Matching departure and arrival airports");
         } else {
             airportService.addAirportFromFlight(flight.getFrom());
@@ -78,7 +78,7 @@ public class FlightService {
 
     private boolean areFlightDatesStrange(Flight flight) {
         Duration duration = Duration.between(flight.getDepartureTime(), flight.getArrivalTime());
-        return duration.toDays() > 1;
+        return duration.toDays() > 3;
     }
 
     private boolean isFlightIncomplete(Flight flight) {
@@ -102,7 +102,7 @@ public class FlightService {
                 || flight.getArrivalTime() == null;
     }
 
-    private boolean isUniqueFlight(Flight flight) {
+    private synchronized boolean isUniqueFlight(Flight flight) {
         boolean unique = true;
         if (!flightRepository.getFlights().isEmpty() && flightRepository.getFlights() != null && flight != null) {
             for (int i = 0; i < flightRepository.getFlights().size(); i++) {

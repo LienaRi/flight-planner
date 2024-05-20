@@ -1,4 +1,4 @@
-package io.codelex.flightplanner.dataRemover;
+package io.codelex.flightplanner.dataremover;
 
 import io.codelex.flightplanner.airport.AirportService;
 import io.codelex.flightplanner.flight.FlightService;

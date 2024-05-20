@@ -2,6 +2,7 @@ package io.codelex.flightplanner.airport;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping
@@ -13,9 +14,9 @@ public class AirportController {
         this.airportService = airportService;
     }
 
-    @GetMapping("/airports")
-    public Airport[] getAirports() {
-        return airportService.getAirports();
+    @GetMapping("/api/airports")
+    public Airport[] getAirports(@RequestParam String search) {
+        return airportService.getAirports(search);
     }
 
 

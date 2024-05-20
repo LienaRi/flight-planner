@@ -14,9 +14,9 @@ public class Flight {
     private Airport from;
     private Airport to;
     private String carrier;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departureTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrivalTime;
 
     public Flight() {

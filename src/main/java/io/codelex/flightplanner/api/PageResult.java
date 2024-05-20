@@ -1,13 +1,11 @@
 package io.codelex.flightplanner.api;
 
-import io.codelex.flightplanner.flight.Flight;
-
-public class PageResult {
+public class PageResult<T> {
     protected int page;
     protected int totalItems;
-    protected Flight[] items;
+    protected T[] items;
 
-    public PageResult(int page, int totalItems, Flight[] items) {
+    public PageResult(int page, int totalItems, T[] items) {
         this.page = page;
         this.totalItems = totalItems;
         this.items = items;
@@ -32,11 +30,11 @@ public class PageResult {
         this.totalItems = totalItems;
     }
 
-    public Flight[] getItems() {
+    public T[] getItems() {
         return items;
     }
 
-    public void setItems(Flight[] items) {
+    public void setItems(T[] items) {
         this.items = items;
     }
 }

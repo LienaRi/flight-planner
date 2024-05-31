@@ -27,21 +27,21 @@ public class FlightDbService extends FlightService {
 
     @Override
     public PageResult<Flight> searchFlights(SearchFlightRequest searchFlightRequest) {
-        List<Flight> searchedFlights;
-        if (checkIfSearchValid(searchFlightRequest)) {
-            searchedFlights = flightDbRepository.findFlightsByFromIsLikeIgnoreCaseAndToLikeIgnoreCaseAndDepartureTime_Date
-                    (searchFlightRequest.getFrom(),searchFlightRequest.getTo(), searchFlightRequest.getDepartureDate());
-            Flight[] flightSearchResults = searchedFlights.toArray(new Flight[0]);
-            return new PageResult<>(0, flightSearchResults.length, flightSearchResults);
-        } else {
-            return null;
-        }
+//        List<Flight> searchedFlights;
+//        if (checkIfSearchValid(searchFlightRequest)) {
+//            searchedFlights = flightDbRepository.findAll(searchFlightRequest.getFrom(),searchFlightRequest.getTo(), searchFlightRequest.getDepartureDate());
+//            Flight[] flightSearchResults = searchedFlights.toArray(new Flight[0]);
+//            return new PageResult<>(0, flightSearchResults.length, flightSearchResults);
+//        } else {
+//            return null;
+//        }
+        return null;
     }
 
     @Override
     @ResponseStatus(HttpStatus.OK)
     public Flight findFlightById(long id) {
-        return this.flightDbRepository.findFlightById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return this.flightDbRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FlightDbService extends FlightService {
 
     @Override
     public void deleteFlight(long id) {
-        this.flightDbRepository.deleteFlightById(id);
+        this.flightDbRepository.deleteById(id);
     }
 
     @Override
@@ -79,8 +79,10 @@ public class FlightDbService extends FlightService {
         return flight;
     }
 
+
     private synchronized boolean isUniqueFlight(Flight flight) {
-        return !flightDbRepository.findFlightsByFromAndToAndCarrierAndDepartureTimeAndArrivalTime(flight.getFrom(), flight.getTo(), flight.getCarrier(), flight.getDepartureTime(), flight.getArrivalTime());
+//        return !flightDbRepository.findFlightsByFromAndToAndCarrierAndDepartureTimeAndArrivalTime(flight.getFrom(), flight.getTo(), flight.getCarrier(), flight.getDepartureTime(), flight.getArrivalTime());
+    return true;
     }
 
 }

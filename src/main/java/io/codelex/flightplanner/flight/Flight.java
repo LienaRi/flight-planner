@@ -23,9 +23,13 @@ public class Flight {
     @JoinColumn(name="airport_to_id", nullable=false)
     private Airport to;
     private String carrier;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureTime;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "arrival_time", nullable = false)
     private LocalDateTime arrivalTime;
 
     public Flight() {

@@ -1,9 +1,6 @@
 package io.codelex.flightplanner.configuration;
 
-import io.codelex.flightplanner.airport.AirportDbRepository;
-import io.codelex.flightplanner.airport.AirportDbService;
-import io.codelex.flightplanner.airport.AirportInMemoryRepository;
-import io.codelex.flightplanner.airport.AirportService;
+import io.codelex.flightplanner.airport.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +16,9 @@ public class AirportModeConfiguration {
     @Bean
     public AirportService createAirportServiceBean(AirportDbRepository airportDbRepository, AirportInMemoryRepository airportInMemoryRepository) {
         if (airportStorageMode.equalsIgnoreCase("database")) {
-            return new AirportDbService(airportDbRepository, airportInMemoryRepository);
+            return new AirportDbService(airportDbRepository);
         } else {
-            return new AirportInMemoryRepository(new ArrayList<>());
+            return new AirportInMemoryService(airportInMemoryRepository);
         }
     }
 }

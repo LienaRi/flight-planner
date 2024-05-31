@@ -5,25 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class AirportService {
-    private final AirportInMemoryRepository airportInMemoryRepository;
+public interface AirportService {
 
-    public AirportService(AirportInMemoryRepository airportInMemoryRepository) {
-        this.airportInMemoryRepository = airportInMemoryRepository;
-    }
+    public Airport[] getAirports(String search);
 
-    public Airport[] getAirports(String search) {
-        if (search == null || search.isEmpty()) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Airport not found");
-        }
-        return airportInMemoryRepository.getAirports(search.toLowerCase().trim());
-    }
+    public void addAirportFromFlight(Airport ofFlight);
 
-    public void addAirportFromFlight(Airport ofFlight) {
-        airportInMemoryRepository.addAirport(new Airport(ofFlight.getCountry(), ofFlight.getCity(), ofFlight.getAirport()));
-    }
-
-    public void clearAirports() {
-        airportInMemoryRepository.clearAirports();
-    }
+    public void clearAirports();
 }

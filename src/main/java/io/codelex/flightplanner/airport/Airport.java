@@ -20,6 +20,8 @@ public class Airport {
 
     protected String airport;
 
+
+
     public Airport(String country, String city, String airport) {
         this.country = country;
         this.city = city;

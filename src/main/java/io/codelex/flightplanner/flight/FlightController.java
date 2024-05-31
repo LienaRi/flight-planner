@@ -24,18 +24,18 @@ public class FlightController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin-api/flights/{id}")
-    public Flight findFlightById(@PathVariable int id) {
+    public Flight findFlightById(@PathVariable long id) {
         return flightService.findFlightById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/flights/{id}")
-    public Flight findFlightByIdCustomer(@PathVariable int id) {
+    public Flight findFlightByIdCustomer(@PathVariable long id) {
         return flightService.findFlightById(id);
     }
 
     @DeleteMapping("/admin-api/flights/{id}")
-    public void deleteFlight(@PathVariable int id) {
+    public void deleteFlight(@PathVariable long id) {
         flightService.deleteFlight(id);
     }
 

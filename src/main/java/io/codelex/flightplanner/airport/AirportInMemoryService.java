@@ -4,11 +4,10 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-@Service
-public class AirportService {
+public class AirportInMemoryService {
     private final AirportInMemoryRepository airportInMemoryRepository;
 
-    public AirportService(AirportInMemoryRepository airportInMemoryRepository) {
+    public AirportInMemoryService(AirportInMemoryRepository airportInMemoryRepository) {
         this.airportInMemoryRepository = airportInMemoryRepository;
     }
 

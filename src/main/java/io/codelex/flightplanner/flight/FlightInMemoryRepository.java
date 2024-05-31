@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class FlightRepository {
+public class FlightInMemoryRepository {
     private List<Flight> flights;
 
-    public FlightRepository() {
+    public FlightInMemoryRepository() {
         flights = new ArrayList<>();
     }
 
@@ -28,7 +28,7 @@ public class FlightRepository {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    public Flight findFlightById(int id) {
+    public Flight findFlightById(long id) {
         for (Flight flight : flights) {
             if (flight.getId() == id) {
                 return flight;
@@ -46,7 +46,7 @@ public class FlightRepository {
         flights.add(flight);
     }
 
-    public void deleteFlight(int id) {
+    public void deleteFlight(long id) {
         flights.removeIf(flight -> flight.getId() == id);
     }
 

@@ -3,15 +3,24 @@ package io.codelex.flightplanner.flight;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.codelex.flightplanner.airport.Airport;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
+@Entity
 public class Flight {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name="airport_from_id", nullable=false)
     private Airport from;
+
+    @ManyToOne
+    @JoinColumn(name="airport_to_id", nullable=false)
     private Airport to;
     private String carrier;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
@@ -31,22 +40,14 @@ public class Flight {
         this.arrivalTime = arrivalTime;
     }
 
-    public Flight(int id, Airport from, Airport to, String carrier, LocalDateTime departureTime, LocalDateTime arrivalTime) {
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.carrier = carrier;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-    }
 
     @JsonProperty("id")
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     @JsonProperty("id")
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

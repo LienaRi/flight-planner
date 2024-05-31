@@ -1,10 +1,19 @@
 package io.codelex.flightplanner.airport;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
+@Entity
 public class Airport {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     protected String country;
 
     protected String city;
@@ -23,6 +32,14 @@ public class Airport {
 
     public Airport(String airport) {
         this.airport = airport;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCountry() {

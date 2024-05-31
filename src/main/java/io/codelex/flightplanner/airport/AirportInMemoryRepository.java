@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AirportRepository {
+public class AirportInMemoryRepository {
     private final List<Airport> airports;
 
-    public AirportRepository(List<Airport> airports) {
+    public AirportInMemoryRepository(List<Airport> airports) {
         this.airports = airports;
     }
 

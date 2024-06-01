@@ -1,52 +1,58 @@
-package io.codelex.flightplanner.flight;
+package io.codelex.flightplanner.services;
 
-import io.codelex.flightplanner.airport.AirportService;
 import io.codelex.flightplanner.api.AddFlightRequest;
 import io.codelex.flightplanner.api.PageResult;
 import io.codelex.flightplanner.api.SearchFlightRequest;
+import io.codelex.flightplanner.domain.Airport;
+import io.codelex.flightplanner.domain.Flight;
+import io.codelex.flightplanner.repositories.FlightDbRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-public class FlightInMemoryService extends FlightService {
+public class FlightDbService extends FlightService {
 
-    private final FlightInMemoryRepository flightInMemoryRepository;
+    private final FlightDbRepository flightDbRepository;
     private final AirportService airportService;
-    private final AtomicInteger idGenerator = new AtomicInteger();
 
-    public FlightInMemoryService(FlightInMemoryRepository flightInMemoryRepository, AirportService airportService) {
-        this.flightInMemoryRepository = flightInMemoryRepository;
+    public FlightDbService(FlightDbRepository flightDbRepository, AirportService airportService) {
+        this.flightDbRepository = flightDbRepository;
         this.airportService = airportService;
     }
 
     @Override
+    @ResponseStatus(HttpStatus.OK)
     public PageResult<Flight> searchFlights(SearchFlightRequest searchFlightRequest) {
+        List<Flight> searchedFlights = new ArrayList<>();
         if (checkIfSearchValid(searchFlightRequest)) {
-            return flightInMemoryRepository.searchFlights(searchFlightRequest.getFrom(), searchFlightRequest.getTo(), searchFlightRequest.getDepartureDate());
-        } else {
-            return null;
+            Airport foundAirportFrom = Arrays.stream(airportService.getAirports(searchFlightRequest.getFrom())).findFirst().orElse(null);
+            Airport foundAirportTo = Arrays.stream(airportService.getAirports(searchFlightRequest.getTo())).findFirst().orElse(null);
+            searchedFlights = flightDbRepository.findAllByFromAndToAndDepartureDate(foundAirportFrom, foundAirportTo, searchFlightRequest.getDepartureDate());
         }
+        Flight[] flightSearchResults = searchedFlights.toArray(new Flight[0]);
+        return new PageResult<>(0, flightSearchResults.length, flightSearchResults);
     }
 
     @Override
     @ResponseStatus(HttpStatus.OK)
     public Flight findFlightById(long id) {
-        return flightInMemoryRepository.findFlightById(id);
+        return this.flightDbRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @Override
     public void clearFlights() {
-        flightInMemoryRepository.clearFlights();
+        this.flightDbRepository.deleteAll();
     }
 
     @Override
     public void deleteFlight(long id) {
-        flightInMemoryRepository.deleteFlight(id);
+        this.flightDbRepository.deleteById(id);
     }
 
     @Override
@@ -69,25 +75,17 @@ public class FlightInMemoryService extends FlightService {
         } else {
             airportService.addAirportFromFlight(flight.getFrom());
             airportService.addAirportFromFlight(flight.getTo());
-            flight.setId(idGenerator.incrementAndGet());
-            flightInMemoryRepository.addFlight(flight);
+            this.flightDbRepository.save(flight);
         }
         return flight;
     }
 
     private synchronized boolean isUniqueFlight(Flight flight) {
-        boolean unique = true;
-        if (!flightInMemoryRepository.getFlights().isEmpty() && flightInMemoryRepository.getFlights() != null && flight != null) {
-            for (int i = 0; i < flightInMemoryRepository.getFlights().size(); i++) {
-                if (flightInMemoryRepository.getFlights().get(i).equals(flight)) {
-                    unique = false;
-                    break;
-                }
-            }
-        }
-        if (flightInMemoryRepository.getFlights().isEmpty()) {
-            unique = true;
-        }
-        return unique;
+        return flightDbRepository.findFirstByFromAndToAndCarrierAndDepartureTimeAndArrivalTime(
+                flight.getFrom(),
+                flight.getTo(),
+                flight.getCarrier(),
+                flight.getDepartureTime(),
+                flight.getArrivalTime()) == null;
     }
 }

@@ -1,16 +1,18 @@
 package io.codelex.flightplanner.configuration;
 
-import io.codelex.flightplanner.airport.*;
+import io.codelex.flightplanner.repositories.AirportDbRepository;
+import io.codelex.flightplanner.repositories.AirportInMemoryRepository;
+import io.codelex.flightplanner.services.AirportDbService;
+import io.codelex.flightplanner.services.AirportInMemoryService;
+import io.codelex.flightplanner.services.AirportService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-
 @Configuration
 public class AirportModeConfiguration {
 
-    @Value("${flightplanner.flight-storage-mode}")
+    @Value("${flight-planner.store-type}")
     private String airportStorageMode;
 
     @Bean

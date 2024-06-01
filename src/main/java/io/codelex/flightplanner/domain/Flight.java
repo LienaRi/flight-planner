@@ -1,8 +1,7 @@
-package io.codelex.flightplanner.flight;
+package io.codelex.flightplanner.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.codelex.flightplanner.airport.Airport;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,11 +15,11 @@ public class Flight {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="airport_from_id", nullable=false)
+    @JoinColumn(name = "airport_from", nullable = false)
     private Airport from;
 
     @ManyToOne
-    @JoinColumn(name="airport_to_id", nullable=false)
+    @JoinColumn(name = "airport_to", nullable = false)
     private Airport to;
     private String carrier;
 
@@ -86,7 +85,7 @@ public class Flight {
     }
 
     @JsonProperty("departureTime")
-    public LocalDateTime  getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
@@ -102,7 +101,7 @@ public class Flight {
 
 
     @JsonProperty("arrivalTime")
-public void setArrivalTime(LocalDateTime arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

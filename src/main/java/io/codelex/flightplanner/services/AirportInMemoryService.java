@@ -1,7 +1,8 @@
-package io.codelex.flightplanner.airport;
+package io.codelex.flightplanner.services;
 
+import io.codelex.flightplanner.domain.Airport;
+import io.codelex.flightplanner.repositories.AirportInMemoryRepository;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 public class AirportInMemoryService implements AirportService {
@@ -16,7 +17,12 @@ public class AirportInMemoryService implements AirportService {
         if (search == null || search.isEmpty()) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Airport not found");
         }
-        return airportInMemoryRepository.getAirports(search.toLowerCase().trim());
+        return airportInMemoryRepository.getAirports(cleanSearchPhrase(search));
+    }
+
+    @Override
+    public String cleanSearchPhrase(String search) {
+        return search.replaceAll("[^a-zA-Z0-9]", "").toLowerCase().trim();
     }
 
     @Override

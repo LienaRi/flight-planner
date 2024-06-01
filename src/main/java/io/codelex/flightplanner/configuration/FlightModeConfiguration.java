@@ -1,7 +1,11 @@
 package io.codelex.flightplanner.configuration;
 
-import io.codelex.flightplanner.airport.AirportService;
-import io.codelex.flightplanner.flight.*;
+import io.codelex.flightplanner.repositories.FlightDbRepository;
+import io.codelex.flightplanner.repositories.FlightInMemoryRepository;
+import io.codelex.flightplanner.services.AirportService;
+import io.codelex.flightplanner.services.FlightDbService;
+import io.codelex.flightplanner.services.FlightInMemoryService;
+import io.codelex.flightplanner.services.FlightService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FlightModeConfiguration {
 
-    @Value("${flightplanner.flight-storage-mode}")
+    @Value("${flight-planner.store-type}")
     private String flightStorageMode;
 
     @Bean

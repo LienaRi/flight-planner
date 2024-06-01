@@ -1,6 +1,7 @@
-package io.codelex.flightplanner.flight;
+package io.codelex.flightplanner.repositories;
 
 import io.codelex.flightplanner.api.PageResult;
+import io.codelex.flightplanner.domain.Flight;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseStatus;

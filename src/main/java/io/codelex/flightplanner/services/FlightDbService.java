@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +30,8 @@ public class FlightDbService extends FlightService {
     public PageResult<Flight> searchFlights(SearchFlightRequest searchFlightRequest) {
         List<Flight> searchedFlights = new ArrayList<>();
         if (checkIfSearchValid(searchFlightRequest)) {
-            Airport foundAirportFrom = Arrays.stream(airportService.getAirports(searchFlightRequest.getFrom())).findFirst().orElse(null);
-            Airport foundAirportTo = Arrays.stream(airportService.getAirports(searchFlightRequest.getTo())).findFirst().orElse(null);
+            Airport foundAirportFrom = findAirportFromFlight(searchFlightRequest.getFrom());
+            Airport foundAirportTo = findAirportFromFlight(searchFlightRequest.getTo());
             searchedFlights = flightDbRepository.findAllByFromAndToAndDepartureDate(foundAirportFrom, foundAirportTo, searchFlightRequest.getDepartureDate());
         }
         Flight[] flightSearchResults = searchedFlights.toArray(new Flight[0]);
@@ -87,5 +86,10 @@ public class FlightDbService extends FlightService {
                 flight.getCarrier(),
                 flight.getDepartureTime(),
                 flight.getArrivalTime()) == null;
+    }
+
+    private Airport findAirportFromFlight(String airportName) {
+        Optional<Airport> optionalAirport = airportService.findAirport(airportName);
+        return optionalAirport.orElse(null);
     }
 }

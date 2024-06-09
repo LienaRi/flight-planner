@@ -3,6 +3,7 @@ package io.codelex.flightplanner.services;
 import io.codelex.flightplanner.api.AddFlightRequest;
 import io.codelex.flightplanner.api.PageResult;
 import io.codelex.flightplanner.api.SearchFlightRequest;
+import io.codelex.flightplanner.domain.Airport;
 import io.codelex.flightplanner.domain.Flight;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,37 +38,33 @@ public abstract class FlightService {
                 && flight.getFrom().getCity().trim().equalsIgnoreCase(flight.getTo().getCity().trim())
                 && flight.getFrom().getAirport().trim().equalsIgnoreCase(flight.getTo().getAirport().trim());
     }
+
     protected boolean isDepartureBeforeArrival(Flight flight) {
         return flight.getDepartureTime().isBefore(flight.getArrivalTime());
     }
 
     protected boolean isFlightIncomplete(Flight flight) {
-        return flight.getFrom() == null
-                || flight.getTo() == null
-                || flight.getFrom().getCountry() == null
-                || flight.getFrom().getCountry().isBlank()
-                || flight.getFrom().getCity() == null
-                || flight.getFrom().getCity().isBlank()
-                || flight.getFrom().getAirport() == null
-                || flight.getFrom().getAirport().isBlank()
-                || flight.getTo().getCountry() == null
-                || flight.getTo().getCountry().isBlank()
-                || flight.getTo().getCity() == null
-                || flight.getTo().getCity().isBlank()
-                || flight.getTo().getAirport() == null
-                || flight.getTo().getAirport().isBlank()
+        return isAirportIncomplete(flight.getFrom())
+                || isAirportIncomplete(flight.getTo())
                 || flight.getCarrier() == null
                 || flight.getCarrier().isBlank()
                 || flight.getDepartureTime() == null
                 || flight.getArrivalTime() == null;
     }
 
+    private boolean isAirportIncomplete(Airport airport) {
+        return airport == null
+                || airport.getCountry() == null
+                || airport.getCountry().isBlank()
+                || airport.getCity() == null
+                || airport.getCity().isBlank()
+                || airport.getAirport() == null
+                || airport.getAirport().isBlank();
+    }
+
     protected boolean areFlightDatesStrange(Flight flight) {
         Duration duration = Duration.between(flight.getDepartureTime(), flight.getArrivalTime());
         return duration.toDays() > 3;
     }
-
-
-
 }
 

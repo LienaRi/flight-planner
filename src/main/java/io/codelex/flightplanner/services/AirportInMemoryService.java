@@ -5,6 +5,8 @@ import io.codelex.flightplanner.repositories.AirportInMemoryRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 public class AirportInMemoryService implements AirportService {
     private final AirportInMemoryRepository airportInMemoryRepository;
 
@@ -13,7 +15,7 @@ public class AirportInMemoryService implements AirportService {
     }
 
     @Override
-    public Airport[] getAirports(String search) {
+    public Optional<Airport> findAirport(String search) {
         if (search == null || search.isEmpty()) {
             throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Airport not found");
         }

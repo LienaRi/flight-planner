@@ -18,7 +18,7 @@ public class AirportController {
 
     @GetMapping("/api/airports")
     public Airport[] getAirports(@RequestParam String search) {
-        return airportService.getAirports(search);
+        return new Airport[]{airportService.findAirport(search).get()};
     }
 
 

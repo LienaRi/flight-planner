@@ -3,8 +3,8 @@ package io.codelex.flightplanner.repositories;
 import io.codelex.flightplanner.domain.Airport;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AirportInMemoryRepository {
@@ -14,19 +14,8 @@ public class AirportInMemoryRepository {
         this.airports = airports;
     }
 
-    public Airport[] getAirports(String search) {
-        List<Airport> airportList = new ArrayList<>();
-        if (airports.isEmpty()) {
-            return new Airport[0];
-        }
-        for (Airport airport : airports) {
-            if (airport.getAirport().toLowerCase().contains(search)
-                    || airport.getCountry().toLowerCase().contains(search)
-                    || airport.getCity().toLowerCase().contains(search)) {
-                airportList.add(airport);
-            }
-        }
-        return airportList.toArray(new Airport[0]);
+    public Optional<Airport> getAirports(String search) {
+        return airports.stream().filter(airport -> checkIfAirportContainsSearchValue(airport, search)).findFirst();
     }
 
     public void addAirport(Airport airport) {
@@ -37,5 +26,11 @@ public class AirportInMemoryRepository {
 
     public void clearAirports() {
         airports.clear();
+    }
+
+    private boolean checkIfAirportContainsSearchValue(Airport airport, String search) {
+        return airport.getAirport().toLowerCase().contains(search)
+                || airport.getCountry().toLowerCase().contains(search)
+                || airport.getCity().toLowerCase().contains(search);
     }
 }

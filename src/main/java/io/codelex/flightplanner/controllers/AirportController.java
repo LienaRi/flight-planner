@@ -1,5 +1,7 @@
-package io.codelex.flightplanner.airport;
+package io.codelex.flightplanner.controllers;
 
+import io.codelex.flightplanner.domain.Airport;
+import io.codelex.flightplanner.services.AirportService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +18,7 @@ public class AirportController {
 
     @GetMapping("/api/airports")
     public Airport[] getAirports(@RequestParam String search) {
-        return airportService.getAirports(search);
+        return new Airport[]{airportService.findAirport(search).get()};
     }
 
 

@@ -1,15 +1,23 @@
-package io.codelex.flightplanner.airport;
+package io.codelex.flightplanner.domain;
 
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.util.Objects;
 
+@Entity
 public class Airport {
 
     protected String country;
 
     protected String city;
 
+    @Id
+    @Column(name = "airport_id", nullable = false)
     protected String airport;
+
 
     public Airport(String country, String city, String airport) {
         this.country = country;
@@ -21,9 +29,6 @@ public class Airport {
 
     }
 
-    public Airport(String airport) {
-        this.airport = airport;
-    }
 
     public String getCountry() {
         return country;

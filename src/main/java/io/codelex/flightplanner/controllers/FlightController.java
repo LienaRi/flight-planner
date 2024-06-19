@@ -1,8 +1,10 @@
-package io.codelex.flightplanner.flight;
+package io.codelex.flightplanner.controllers;
 
 import io.codelex.flightplanner.api.AddFlightRequest;
 import io.codelex.flightplanner.api.PageResult;
 import io.codelex.flightplanner.api.SearchFlightRequest;
+import io.codelex.flightplanner.domain.Flight;
+import io.codelex.flightplanner.services.FlightService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +26,18 @@ public class FlightController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/admin-api/flights/{id}")
-    public Flight findFlightById(@PathVariable int id) {
+    public Flight findFlightById(@PathVariable long id) {
         return flightService.findFlightById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/flights/{id}")
-    public Flight findFlightByIdCustomer(@PathVariable int id) {
+    public Flight findFlightByIdCustomer(@PathVariable long id) {
         return flightService.findFlightById(id);
     }
 
     @DeleteMapping("/admin-api/flights/{id}")
-    public void deleteFlight(@PathVariable int id) {
+    public void deleteFlight(@PathVariable long id) {
         flightService.deleteFlight(id);
     }
 

@@ -1,7 +1,7 @@
 package io.codelex.flightplanner.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.codelex.flightplanner.airport.Airport;
+import io.codelex.flightplanner.domain.Airport;
 
 import java.time.LocalDateTime;
 

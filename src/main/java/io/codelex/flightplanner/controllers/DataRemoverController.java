@@ -1,7 +1,7 @@
-package io.codelex.flightplanner.dataremover;
+package io.codelex.flightplanner.controllers;
 
-import io.codelex.flightplanner.airport.AirportService;
-import io.codelex.flightplanner.flight.FlightService;
+import io.codelex.flightplanner.services.AirportService;
+import io.codelex.flightplanner.services.FlightService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
